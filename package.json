@@ -1,0 +1,12 @@
+{
+  "name": "stallcheck-profiling-system",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Local stall attendance and rental transparency prototype",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  }
+}
