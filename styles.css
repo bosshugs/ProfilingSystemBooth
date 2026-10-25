@@ -24,3 +24,19 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .field textarea{resize:vertical}
 .primary:disabled{opacity:.65;cursor:wait;transform:none}
 @media(max-width:700px){.sidebar nav{overflow-x:auto;justify-content:flex-start}.sidebar nav button{min-width:58px;padding-inline:6px}.sidebar nav button .nav-icon{width:auto}}
+.attendance-filters{align-items:center}
+.attendance-filters input,.attendance-filters select{min-height:38px}
+.attendance-filters .secondary{min-height:38px}
+@media(max-width:700px){.attendance-filters input{flex-basis:100%}.attendance-filters select{flex:1}}
+@media print{
+  body,.app{background:#fff!important}
+  #loginView,.topbar,.sidebar,.attendance-filters,.print-button,#toastHost{display:none!important}
+  #appView{display:block!important}
+  .layout{display:block!important;min-height:0!important}
+  .main{max-width:none!important;padding:0!important}
+  .page-head{margin-bottom:16px}
+  .card,.table-wrap{box-shadow:none!important;border-color:#ddd!important}
+  .report-highlight{background:#fff!important;border:1px solid #ddd;border-left:3px solid #a8752b}
+  table{white-space:normal!important}
+  th,td{padding:8px!important}
+}

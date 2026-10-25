@@ -274,9 +274,16 @@ function registerPage() {
 
 function attendancePage() {
   const rows = state.user.role === 'admin' ? state.attendance : state.attendance;
+  const methods = [...new Set(rows.map(row => row.method).filter(Boolean))];
   return `${pageHead(state.user.role === 'admin' ? 'Attendance records' : 'Your attendance', 'Review saved check-in records by date and verification method.')}
     <div class="report-highlight">A record means a successful demo check-in. It is not proof of sales. Missing records are not automatically treated as confirmed absences.</div>
-    <article class="card">${attendanceTable(rows)}</article>`;
+    <div class="filterbar attendance-filters">
+      <input id="attendanceSearch" type="search" placeholder="Search date${state.user.role === 'admin' ? ', renter, or stall' : ' or method'}" aria-label="Search attendance records">
+      <select id="attendanceMethod" aria-label="Filter by check-in method"><option value="">All methods</option>${methods.map(method => `<option value="${escapeHtml(method)}">${escapeHtml(method)}</option>`).join('')}</select>
+      <button class="secondary" id="resetAttendanceFilters" type="button">Reset filters</button>
+      <button class="secondary print-button" id="printAttendance" type="button">Print / Save PDF</button>
+    </div>
+    <article class="card" id="attendanceTable">${attendanceTable(rows)}</article>`;
 }
 
 function reportPage() {
@@ -376,6 +383,28 @@ async function render() {
     };
     search.addEventListener('input', update);
     status.addEventListener('change', update);
+  }
+
+  const attendanceSearch = document.getElementById('attendanceSearch');
+  if (attendanceSearch) {
+    const methodFilter = document.getElementById('attendanceMethod');
+    const updateAttendance = () => {
+      const query = attendanceSearch.value.trim().toLowerCase();
+      const method = methodFilter.value;
+      const filtered = state.attendance.filter(row =>
+        (!method || row.method === method) &&
+        [row.business_date, row.method, row.name, row.stall].some(value => String(value || '').toLowerCase().includes(query))
+      );
+      document.getElementById('attendanceTable').innerHTML = attendanceTable(filtered);
+    };
+    attendanceSearch.addEventListener('input', updateAttendance);
+    methodFilter.addEventListener('change', updateAttendance);
+    document.getElementById('resetAttendanceFilters').addEventListener('click', () => {
+      attendanceSearch.value = '';
+      methodFilter.value = '';
+      updateAttendance();
+    });
+    document.getElementById('printAttendance').addEventListener('click', () => window.print());
   }
 
   bindApprovals();

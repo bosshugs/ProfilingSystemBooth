@@ -69,6 +69,17 @@ function seedAdmin() {
 }
 seedAdmin();
 
+function seedDemoRenter() {
+  const existing = db.prepare("SELECT id FROM users WHERE username = 'renter' OR email = 'renter@stallcheck.local'").get();
+  if (existing) return;
+  const credentials = hashPassword('renter123');
+  db.prepare(`INSERT INTO users (username, name, email, password_salt, password_hash, role, stall, daily_rate, status)
+    VALUES (?, ?, ?, ?, ?, 'renter', ?, ?, 'Active')`).run(
+    'renter', 'Demo Renter', 'renter@stallcheck.local', credentials.salt, credentials.hash, 'DEMO-01', 5
+  );
+}
+seedDemoRenter();
+
 function json(res, status, data) {
   const body = JSON.stringify(data);
   res.writeHead(status, {

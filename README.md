@@ -23,6 +23,13 @@ Choose **Administrator** and sign in with the development account:
 
 The app creates this administrator the first time it initializes its local database. It is a development-only password; change it before deploying the application anywhere other people can reach.
 
+For the renter experience, the app also creates a demo stall-owner account when it starts:
+
+- Username: `renter`
+- Password: `renter123`
+
+Choose **Renter** on the sign-in screen to use this account. The requested `admin` / `admin123` credentials remain assigned to the administrator role.
+
 ## What works
 
 - Administrator home page with renter, check-in, dispute, and estimated-rent totals.
